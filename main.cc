@@ -37,6 +37,6 @@ void LoadAndDisplayVolunteers() {
 
 int main() {
   CollectAndStoreVolunteers();
-  LoadAndDisplayVolunteers
+  LoadAndDisplayVolunteers();
   return 0;
 }
