@@ -7,7 +7,7 @@
 // basic_ostream& operator<<(int value);
 void CollectAndStoreVolunteers() {
 
-  // TODO: Provide code to open a file called "volunteer.txt" for writing
+  std::ofstream text_file{"volunteer.txt"};
   std::string choice;
   do {
     int id = 0;
@@ -23,7 +23,10 @@ void CollectAndStoreVolunteers() {
     std::cout << "Add another volunteer (Y/N)? ";
     std::getline(std::cin, choice);
 
-    // TODO: Provide code to store data into the text file
+    text_file.operator<<(id);
+    text_file << "\n";
+    text_file << name << "\n";
+    text_file << schedule << "\n";
   } while (choice == "Y" || choice == "y");
 }
 
@@ -31,12 +34,31 @@ void CollectAndStoreVolunteers() {
 // text file called volunteer.txt and displays them
 // on the screen.
 void LoadAndDisplayVolunteers() {
-  // TODO: Provide code to open a stream to a file called "volunteer.txt" for reading
-  // TODO: Provide code to read information from the file and display it on the screen
+  std::ifstream text_file{"volunteer.txt"};
+  int id;
+  std::string name;
+  std::string schedule;
+  if (text_file.is_open()) {
+    std::cout << "List of volunteers and their schedules:\n";
+    while (text_file >> id) {
+      // The extraction opertor only gets the number for id, but not the next line character
+      // ignore() retrieves the next line character so it does not cause issues with std::getline
+      // when std::getline sees a next line character it assumes all inputs are done so it produces
+      // an error when we do not use ignore()
+      text_file.ignore(); 
+      // std::getline retrieves all characters including spaces until it finds a next line character
+      std::getline(text_file, name);
+      std::getline(text_file, schedule);
+      std::cout << "[" << id << "] " << name 
+                << " (" << schedule << ")\n";
+      
+    }
+    text_file.close();
+  }  
 }
 
 int main() {
   CollectAndStoreVolunteers();
-  LoadAndDisplayVolunteers
+  LoadAndDisplayVolunteers();
   return 0;
 }
